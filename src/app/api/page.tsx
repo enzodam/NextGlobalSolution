@@ -16,20 +16,23 @@ interface Estacao {
 export default function GerenciamentoEstacoes() {
   const router = useRouter();
 
+  // **Estados para os campos do formulário**
   const [nome, setNome] = useState('');
   const [preco, setPreco] = useState('');
   const [horarioDeAbertura, setHorarioDeAbertura] = useState('');
   const [horarioDeFechamento, setHorarioDeFechamento] = useState('');
   const [bombaDisponivel, setBombaDisponivel] = useState(false);
   const [estacoes, setEstacoes] = useState<Estacao[]>([]);
-  const [codigoAtualizando, setCodigoAtualizando] = useState(null);
+  const [codigoAtualizando, setCodigoAtualizando] = useState<number | null>(null);
   const [erro, setErro] = useState('');
   const API_URL = 'http://localhost:8080/RecargaMaps';
 
+  // **Efeito para buscar as estações ao carregar a página**
   useEffect(() => {
     buscarEstacoes();
   }, []);
 
+  // **Função para buscar as estações cadastradas**
   const buscarEstacoes = async () => {
     try {
       const response = await fetch(API_URL);
@@ -45,6 +48,7 @@ export default function GerenciamentoEstacoes() {
     }
   };
 
+  // **Função para criar uma nova estação**
   const criarEstacao = async () => {
     if (!nome || !preco || !horarioDeAbertura || !horarioDeFechamento) {
       setErro('Preencha todos os campos.');
@@ -87,19 +91,86 @@ export default function GerenciamentoEstacoes() {
     }
   };
 
+  // **Função para atualizar uma estação existente**
+  const atualizarEstacao = async () => {
+    if (!nome || !preco || !horarioDeAbertura || !horarioDeFechamento) {
+      setErro('Preencha todos os campos.');
+      return;
+    }
+
+    const precoNumero = parseFloat(preco);
+    if (isNaN(precoNumero)) {
+      setErro('Preço inválido. Insira um número válido.');
+      return;
+    }
+
+    const estacaoAtualizada = {
+      nome,
+      preco: precoNumero,
+      horarioDeAbertura,
+      horarioDeFechamento,
+      bombaDisponivel,
+    };
+
+    try {
+      const response = await fetch(`${API_URL}/${codigoAtualizando}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(estacaoAtualizada),
+      });
+
+      if (!response.ok) {
+        throw new Error('Erro na atualização da estação.');
+      }
+
+      setErro('');
+      limparFormulario();
+      buscarEstacoes();
+    } catch (error) {
+      setErro('Erro ao atualizar estação.');
+      console.error('Erro ao atualizar estação:', error);
+    }
+  };
+
+  // **Função para deletar uma estação**
+  const deletarEstacao = async (codigo: number) => {
+    try {
+      const response = await fetch(`${API_URL}/${codigo}`, {
+        method: 'DELETE',
+      });
+
+      if (!response.ok) {
+        throw new Error('Erro ao deletar estação.');
+      }
+
+      buscarEstacoes();
+    } catch (error) {
+      setErro('Erro ao deletar estação.');
+      console.error('Erro ao deletar estação:', error);
+    }
+  };
+
+  // **Função para limpar o formulário de criação/atualização**
   const limparFormulario = () => {
     setNome('');
     setPreco('');
     setHorarioDeAbertura('');
     setHorarioDeFechamento('');
     setBombaDisponivel(false);
+    setCodigoAtualizando(null);
   };
 
   return (
     <div className="p-6 max-w-4xl mx-auto">
+      {/* **Título da página** */}
       <h1 className="text-3xl font-bold mb-4 text-center">Gerenciamento de Estações</h1>
+
+      {/* **Exibição de erros** */}
       {erro && <p className="text-red-500 mb-4 text-center">{erro}</p>}
 
+      {/* **Formulário para criar ou atualizar estação** */}
       <div className="bg-white shadow-md rounded-lg p-6 mb-6">
         <h2 className="text-xl font-bold mb-4 text-center">
           {codigoAtualizando ? 'Atualizar Estação' : 'Nova Estação'}
@@ -153,14 +224,17 @@ export default function GerenciamentoEstacoes() {
           />
           <label className="text-sm">Bomba Disponível</label>
         </div>
+
+        {/* **Botão de criação ou atualização da estação** */}
         <button
-          onClick={criarEstacao}
+          onClick={codigoAtualizando ? atualizarEstacao : criarEstacao}
           className="mt-4 bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 w-full sm:w-auto"
         >
           {codigoAtualizando ? 'Atualizar Estação' : 'Criar Estação'}
         </button>
       </div>
 
+      {/* **Tabela de estações cadastradas** */}
       <div className="bg-white shadow-md rounded-lg p-6">
         <h2 className="text-xl font-bold mb-4 text-center">Estações Criadas</h2>
         <div className="overflow-x-auto">
@@ -184,20 +258,30 @@ export default function GerenciamentoEstacoes() {
                 estacoes.map((estacao) => (
                   <tr key={estacao.codigo} className="text-center">
                     <td className="border p-2">{estacao.nome}</td>
-                    <td className="border p-2">R$ {estacao.preco.toFixed(2)}</td>
+                    <td className="border p-2">{estacao.preco}</td>
                     <td className="border p-2">{estacao.horarioDeAbertura}</td>
                     <td className="border p-2">{estacao.horarioDeFechamento}</td>
                     <td className="border p-2">
                       {estacao.bombaDisponivel ? 'Sim' : 'Não'}
                     </td>
                     <td className="border p-2">
+                      {/* **Botões de atualização e deleção** */}
                       <button
                         className="bg-yellow-500 text-white py-1 px-3 rounded hover:bg-yellow-600 mr-2"
+                        onClick={() => {
+                          setNome(estacao.nome);
+                          setPreco(estacao.preco.toString());
+                          setHorarioDeAbertura(estacao.horarioDeAbertura);
+                          setHorarioDeFechamento(estacao.horarioDeFechamento);
+                          setBombaDisponivel(estacao.bombaDisponivel);
+                          setCodigoAtualizando(estacao.codigo);
+                        }}
                       >
                         Atualizar
                       </button>
                       <button
                         className="bg-red-500 text-white py-1 px-3 rounded hover:bg-red-600"
+                        onClick={() => deletarEstacao(estacao.codigo)}
                       >
                         Deletar
                       </button>
@@ -208,15 +292,6 @@ export default function GerenciamentoEstacoes() {
             </tbody>
           </table>
         </div>
-      </div>
-
-      <div className="flex justify-center mt-6">
-        <button
-          onClick={() => router.back()}
-          className="bg-black text-white py-2 px-4 rounded mb-10 hover:bg-gray-950"
-        >
-          Voltar
-        </button>
       </div>
       <Footer />
     </div>
