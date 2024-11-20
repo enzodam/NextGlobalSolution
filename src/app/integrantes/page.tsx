@@ -40,11 +40,19 @@ export default function Integrantes() {
         <h1 className="text-3xl">Recarga Maps</h1>
         <p className="mt-2">REPOSITÓRIO</p>
         <a
-          href="https://github.com/enzodam/GlobalSolution"
+          href="https://github.com/enzodam/NextGlobalSolution/"
           target="_blank"
           className="text-blue-500 underline"
         >
-          https://github.com/enzodam/GlobalSolution
+          https://github.com/enzodam/NextGlobalSolution/
+        </a>
+        <p className="mt-2"> Vídeo: </p>
+        <a
+          href="https://youtube.com"
+          target="_blank"
+          className="text-blue-500 underline"
+        >
+          https://github.com/enzodam/NextGlobalSolution/
         </a>
       </header>
 
