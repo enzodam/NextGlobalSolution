@@ -52,7 +52,15 @@ export default function Integrantes() {
           target="_blank"
           className="text-blue-500 underline"
         >
-          https://github.com/enzodam/NextGlobalSolution/
+          https://youtube.com
+        </a>
+        <p className="mt-2">URL vercel:</p>
+        <a
+          href="https://next-global-solution-i3sq.vercel.app/"
+          target="_blank"
+          className="text-blue-500 underline"
+        >
+          https://next-global-solution-i3sq.vercel.app/
         </a>
       </header>
 
