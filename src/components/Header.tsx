@@ -13,12 +13,12 @@ export default function Header() {
     if (element) {
       element.scrollIntoView({ behavior: 'smooth' });
     }
-    setMenuOpen(false); // Fecha o menu em dispositivos móveis após o clique
+    setMenuOpen(false);
   };
 
   return (
     <header className="flex items-center p-2 relative z-10 gap-8">
-      <Image src="/assets/logo.png" alt="Logo EcoPlastic" width={100} height={50} />
+      <Image src="/assets/logo.png" alt="Logo RecargaMaps" width={100} height={50} />
       <h1 className="text-3xl">Recarga Maps</h1>
       <button
         className="menu text-2xl text-black bg-none border-none cursor-pointer md:hidden"
