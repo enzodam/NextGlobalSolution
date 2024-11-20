@@ -96,7 +96,7 @@ export default function Home() {
               {
                 id: 'fidelidade',
                 title: 'Programa de Fidelidade',
-                content: 'Acumule pontos e aproveite descontos e recompensas ao utilizar estações parceiras.',
+                content: 'Junte pontos e aproveite descontos e benefícios exclusivos.',
               },
               {
                 id: 'avaliacoes',
