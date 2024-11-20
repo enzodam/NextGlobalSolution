@@ -48,11 +48,11 @@ export default function Integrantes() {
         </a>
         <p className="mt-2"> Vídeo: </p>
         <a
-          href="https://youtube.com"
+          href="https://www.youtube.com/watch?v=f-Bk0JE5g1w"
           target="_blank"
           className="text-blue-500 underline"
         >
-          https://youtube.com
+          https://www.youtube.com/watch?v=f-Bk0JE5g1w
         </a>
         <p className="mt-2">URL vercel:</p>
         <a
