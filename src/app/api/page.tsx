@@ -293,6 +293,13 @@ export default function GerenciamentoEstacoes() {
           </table>
         </div>
       </div>
+      {/* **Botao Voltar** */}
+      <button
+        onClick={() => router.push('/')}
+        className="mt-4 bg-black text-white py-2 px-4 rounded hover:bg-black mb-8 mt-8 w-full sm:w-auto mx-auto block"
+      >
+        Voltar
+      </button>
       <Footer />
     </div>
   );
