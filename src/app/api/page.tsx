@@ -4,6 +4,15 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Footer from '@/components/Footer';
 
+interface Estacao {
+  codigo: number;
+  nome: string;
+  preco: number;
+  horarioDeAbertura: string;
+  horarioDeFechamento: string;
+  bombaDisponivel: boolean;
+}
+
 export default function GerenciamentoEstacoes() {
   const router = useRouter();
 
@@ -12,7 +21,7 @@ export default function GerenciamentoEstacoes() {
   const [horarioDeAbertura, setHorarioDeAbertura] = useState('');
   const [horarioDeFechamento, setHorarioDeFechamento] = useState('');
   const [bombaDisponivel, setBombaDisponivel] = useState(false);
-  const [estacoes, setEstacoes] = useState([]);
+  const [estacoes, setEstacoes] = useState<Estacao[]>([]);
   const [codigoAtualizando, setCodigoAtualizando] = useState(null);
   const [erro, setErro] = useState('');
   const API_URL = 'http://localhost:8080/RecargaMaps';
@@ -42,9 +51,15 @@ export default function GerenciamentoEstacoes() {
       return;
     }
 
+    const precoNumero = parseFloat(preco);
+    if (isNaN(precoNumero)) {
+      setErro('Preço inválido. Insira um número válido.');
+      return;
+    }
+
     const novaEstacao = {
       nome,
-      preco: parseFloat(preco),
+      preco: precoNumero,
       horarioDeAbertura,
       horarioDeFechamento,
       bombaDisponivel,
@@ -161,45 +176,48 @@ export default function GerenciamentoEstacoes() {
               </tr>
             </thead>
             <tbody>
-              {estacoes.map((estacao) => (
-                <tr key={estacao.codigo} className="text-center">
-                  <td className="border p-2">{estacao.nome}</td>
-                  <td className="border p-2">R$ {estacao.preco.toFixed(2)}</td>
-                  <td className="border p-2">{estacao.horarioDeAbertura}</td>
-                  <td className="border p-2">{estacao.horarioDeFechamento}</td>
-                  <td className="border p-2">
-                    {estacao.bombaDisponivel ? 'Sim' : 'Não'}
-                  </td>
-                  <td className="border p-2">
-                    <button
-                      className="bg-yellow-500 text-white py-1 px-3 rounded hover:bg-yellow-600 mr-2"
-                    >
-                      Atualizar
-                    </button>
-                    <button
-                      className="bg-red-500 text-white py-1 px-3 rounded hover:bg-red-600"
-                    >
-                      Deletar
-                    </button>
-                  </td>
+              {estacoes.length === 0 ? (
+                <tr>
+                  <td colSpan={6} className="text-center py-4">Nenhuma estação cadastrada.</td>
                 </tr>
-              ))}
+              ) : (
+                estacoes.map((estacao) => (
+                  <tr key={estacao.codigo} className="text-center">
+                    <td className="border p-2">{estacao.nome}</td>
+                    <td className="border p-2">R$ {estacao.preco.toFixed(2)}</td>
+                    <td className="border p-2">{estacao.horarioDeAbertura}</td>
+                    <td className="border p-2">{estacao.horarioDeFechamento}</td>
+                    <td className="border p-2">
+                      {estacao.bombaDisponivel ? 'Sim' : 'Não'}
+                    </td>
+                    <td className="border p-2">
+                      <button
+                        className="bg-yellow-500 text-white py-1 px-3 rounded hover:bg-yellow-600 mr-2"
+                      >
+                        Atualizar
+                      </button>
+                      <button
+                        className="bg-red-500 text-white py-1 px-3 rounded hover:bg-red-600"
+                      >
+                        Deletar
+                      </button>
+                    </td>
+                  </tr>
+                ))
+              )}
             </tbody>
           </table>
         </div>
       </div>
 
-        {/* Botão Voltar */}
-        <div className="flex justify-center mt-6">
-            <button
-            onClick={() => router.back()}
-            className="bg-black text-white py-2 px-4 rounded mb-10 hover:bg-gray-950"
-            >
-                Voltar
-            </button>
-        </div>
-
-
+      <div className="flex justify-center mt-6">
+        <button
+          onClick={() => router.back()}
+          className="bg-black text-white py-2 px-4 rounded mb-10 hover:bg-gray-950"
+        >
+          Voltar
+        </button>
+      </div>
       <Footer />
     </div>
   );
