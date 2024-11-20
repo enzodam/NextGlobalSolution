@@ -38,6 +38,12 @@ npm run dev
 -Acesse no navegador:
 http://localhost:3000
 
+## Vídeo:
+https://www.youtube.com/watch?v=f-Bk0JE5g1w
+
+## URL Vercel:
+https://next-global-solution-i3sq.vercel.app/
+
 ## 👨‍💻 Equipe de Desenvolvimento
 - Enzo Dias Alfaia Mendes
   
