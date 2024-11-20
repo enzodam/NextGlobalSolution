@@ -12,7 +12,7 @@ export default function Integrantes() {
       rm: '558295',
       nome: 'Ricardo Rodrigues Cotovasso',
       turma: '1TDSR',
-      linkedin: 'riclass2011@hotmail.com',
+      linkedin: 'https://www.linkedin.com/in/ricardo-rodrigues-40a130137/',
       github: 'https://github.com/R1cle',
       foto: '/assets/ricardo.jpeg',
     },
