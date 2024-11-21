@@ -39,7 +39,7 @@ npm run dev
 http://localhost:3000
 
 ## Vídeo:
-https://www.youtube.com/watch?v=f-Bk0JE5g1w
+https://www.youtube.com/watch?v=Pta7TMe1kJ4
 
 ## URL Vercel:
 https://next-global-solution-i3sq.vercel.app/
