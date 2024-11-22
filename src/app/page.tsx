@@ -101,7 +101,7 @@ export default function Home() {
               {
                 id: 'avaliacoes',
                 title: 'Avaliações e Sugestões',
-                content: 'Avalie as estações de carregamento e contribua com sugestões para a comunidade.',
+                content: 'Avalie as estações de carregamento e compartilhe suas sugestões com a comunidade.',
               },
             ].map((item) => (
               <div key={item.id}>
